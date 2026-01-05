@@ -1,0 +1,92 @@
+# Tests manuels des routes d'authentification
+# Utiliser avec REST Client (VS Code extension) ou Postman
+
+### Variables
+@baseUrl = http://localhost:3000
+@email = test@example.com
+@password = Test1234!
+
+### 1. Inscription (Register)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+### 2. Connexion (Login)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 3. Vérifier l'authentification
+GET {{baseUrl}}/api/auth/check
+Cookie: auth_token=YOUR_TOKEN_HERE
+
+### 4. Obtenir le profil
+GET {{baseUrl}}/api/auth/profile
+Cookie: auth_token=YOUR_TOKEN_HERE
+
+### 5. Mettre à jour le profil
+PUT {{baseUrl}}/api/auth/profile
+Content-Type: application/json
+Cookie: auth_token=YOUR_TOKEN_HERE
+
+{
+  "firstName": "Updated",
+  "lastName": "Name"
+}
+
+### 6. Rafraîchir le token
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
+}
+
+### 7. Déconnexion (Logout)
+POST {{baseUrl}}/api/auth/logout
+Cookie: auth_token=YOUR_TOKEN_HERE
+
+### 8. Test avec email invalide (devrait échouer)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "password": "{{password}}",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+### 9. Test avec mot de passe court (devrait échouer)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "new@example.com",
+  "password": "123",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+### 10. Test sans authentification (devrait échouer)
+GET {{baseUrl}}/api/auth/profile
+
+### 11. Test rate limiting (répéter 6 fois rapidement)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "wrongpassword"
+}
