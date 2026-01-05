@@ -401,4 +401,4 @@ ISC
 
 ## 👥 Support
 
-Pour toute question ou problème, consultez la documentation du projet Ecom2Micro.
+Pour toute question ou problème, consultez la documentation du projet Ecm.
